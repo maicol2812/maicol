@@ -9,30 +9,30 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const nuevosUsuarios = [
   {
     identificacion: 112233,
-    nombre_usuario: "maikol pully",
-    clave_encriptada: "maikolPully123",
+    nombre_usuario: "Maicggo",
+    clave_encriptada: "Maicolocampo123",
     usuario_normal: 1,
     usuario_administrador: 0,
-    usuario_superadministrador: 0,
-    email: "maikol.Pully@ejemplo.com"
-  },
-  {
-    identificacion: 445566,
-    nombre_usuario: "Maicol ocampo",
-    clave_encriptada: "maicolOcampo456",
-    usuario_normal: 0,
-    usuario_administrador: 1,
     usuario_superadministrador: 0,
     email: "maicol.ocampo@ejemplo.com"
   },
   {
+    identificacion: 445566,
+    nombre_usuario: "Msdfdsf",
+    clave_encriptada: "MaikolPully456",
+    usuario_normal: 0,
+    usuario_administrador: 1,
+    usuario_superadministrador: 0,
+    email: "Maikol.pully@ejemplo.com"
+  },
+  {
     identificacion: 778899,
-    nombre_usuario: "juan pablo",
-    clave_encriptada: "juanPablo789",
+    nombre_usuario: "JuanPablo",
+    clave_encriptada: "Juanp789",
     usuario_normal: 0,
     usuario_administrador: 0,
     usuario_superadministrador: 1,
-    email: "juN.pablo@ejemplo.com"
+    email: "juanpablo@ejemplocom"
   }
 ];
 
