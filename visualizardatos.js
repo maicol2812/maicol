@@ -27,7 +27,7 @@ async function getAllUserData() {
     users.forEach((user, index) => {
       console.log(`👤 Usuario ${index + 1}:`);
       console.log('─'.repeat(30));
-      // Mostrar cada campo del usuario
+      // Mostrar cada campo del usuarioA
       for (const [key, value] of Object.entries(user)) {
         console.log(`  ${key.padEnd(25)}: ${value}`);
       }

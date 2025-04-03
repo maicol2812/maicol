@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Datos de Usuarios</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+  <h1>Listado de Usuarios</h1>
+  <button id="loadButton">Cargar Datos</button>
+  <table id="userTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Fecha de Registro</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Aquí se mostrarán los datos de los usuarios -->
+    </tbody>
+  </table>
+
+  <script>
+    // URL y clave de la API de Supabase
+    const SUPABASE_URL = 'https://yrnfeftgkshpntzmqurh.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlybmZlZnRna3NocG50em1xdXJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5NDA0MjgsImV4cCI6MjA1ODUxNjQyOH0.NoNXKOX7dNxtOMRL2FpzC1D_r8xgM8Ry1R0nzWc3PvM';
+
+    // Función para cargar los datos de los usuarios
+    async function loadUserData() {
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?select=*`, {
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`
+        }
+      });
+
+      if (!response.ok) {
+        alert('Error al obtener los datos de los usuarios');
+        return;
+      }
+
+      const users = await response.json();
+      const tableBody = document.querySelector('#userTable tbody');
+      tableBody.innerHTML = '';  // Limpiar la tabla antes de agregar nuevos datos
+
+      users.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${user.id}</td>
+          <td>${user.nombre}</td>
+          <td>${user.email}</td>
+          <td>${user.fecha_registro}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Event listener para cargar los datos cuando el botón sea presionado
+    document.getElementById('loadButton').addEventListener('click', loadUserData);
+  </script>
+</body>
+</html>

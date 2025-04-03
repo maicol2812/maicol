@@ -1,59 +1,339 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Practica moviles</title>
-    <style>
-        body{
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-container{
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10 px rgba(0, 0, 0, 0.1);
-            width:300px ;
-        }
-        .login-container{
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .login-container input [type = "submit"]{
-            width: 100%;
-            padding: 10px;
-            background-color: #28a745;
-            border: none;
-            border-radius: 4px;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .login-container input [type = "submit"]:hover{
-            background-color: #218838;
-
-        }
-
-
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Usuarios</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
+  <style>
+    /* Estilos generales */
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+   
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+   
+    /* Estilos para el formulario de login */
+    .login-container {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+   
+    .login-container h2 {
+      text-align: center;
+      color: #4CAF50;
+      margin-bottom: 25px;
+    }
+   
+    .form-group {
+      margin-bottom: 20px;
+    }
+   
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+   
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+   
+    .btn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+      transition: background-color 0.3s;
+    }
+   
+    .btn:hover {
+      background-color: #45a049;
+    }
+   
+    /* Estilos para el área de contenido después del login */
+    .content-area {
+      display: none;
+      margin-top: 30px;
+    }
+   
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+   
+    .user-info {
+      background: #e9f7ef;
+      padding: 10px 15px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+    }
+   
+    .user-info span {
+      margin-right: 10px;
+    }
+   
+    .logout-btn {
+      background-color: #f44336;
+      color: white;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+   
+    /* Estilos para la tabla de usuarios */
+    .user-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+   
+    .user-table th, .user-table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+   
+    .user-table th {
+      background-color: #f2f2f2;
+      font-weight: 600;
+    }
+   
+    .user-table tr:hover {
+      background-color: #f9f9f9;
+    }
+   
+    .action-buttons {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+   
+    .action-buttons button {
+      width: auto;
+      padding: 10px 15px;
+    }
+  </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>LOGIN</h2>
-        <form action="#" method="post">
-            <label for="username">Usuario</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">password</label>
-            <input type="password" id="password" name="password" required>
-
-            <input type="submit" value="iniciar sesion">
-        </form>
+  <div class="container">
+    <!-- Formulario de Login -->
+    <div id="loginArea" class="login-container">
+      <h2>Iniciar Sesión</h2>
+      <div class="form-group">
+        <label for="loginIdentificacion">Identificación:</label>
+        <input type="text" id="loginIdentificacion" placeholder="Ingrese su identificación">
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Contraseña:</label>
+        <input type="password" id="loginPassword" placeholder="Ingrese su contraseña">
+      </div>
+      <button id="loginBtn" class="btn">Ingresar</button>
+      <p style="text-align: center; margin-top: 15px;">
+        ¿No tienes cuenta? <a href="gd.html" style="color: #4CAF50;">Regístrate aquí</a>
+      </p>
     </div>
+   
+    <!-- Área de contenido después del login -->
+    <div id="contentArea" class="content-area">
+      <div class="header">
+        <h1>Listado de Usuarios</h1>
+        <div class="user-info">
+          <span id="loggedInUser"></span>
+          <button id="logoutBtn" class="logout-btn">Cerrar Sesión</button>
+        </div>
+      </div>
+     
+      <div class="action-buttons">
+        <button id="loadUsersBtn" class="btn">Cargar Usuarios</button>
+        <button id="registerUserBtn" class="btn">Registrar Nuevo Usuario</button>
+      </div>
+     
+      <table class="user-table" id="userTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Fecha de Registro</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Los datos se cargarán dinámicamente -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // Configuración de Supabase
+    const SUPABASE_URL = 'https://ddiupbfcemqcwkeptcxb.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkaXVwYmZjZW1xY3drZXB0Y3hiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5NDAyMDEsImV4cCI6MjA1ODUxNjIwMX0.IfeKrbYgGHqRd8cEiWKLlC-DUxtWzk-mAp1STGuTYBY';
+   
+    // Estado de la sesión
+    let currentUser = null;
+   
+    // Elementos del DOM
+    const loginArea = document.getElementById('loginArea');
+    const contentArea = document.getElementById('contentArea');
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const loadUsersBtn = document.getElementById('loadUsersBtn');
+    const registerUserBtn = document.getElementById('registerUserBtn');
+    const loggedInUserSpan = document.getElementById('loggedInUser');
+   
+    // Event Listeners
+    loginBtn.addEventListener('click', handleLogin);
+    logoutBtn.addEventListener('click', handleLogout);
+    loadUsersBtn.addEventListener('click', loadUserData);
+    registerUserBtn.addEventListener('click', () => {
+      window.location.href = 'gd.html';
+    });
+   
+    // Verificar si hay sesión activa al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedUser = localStorage.getItem('currentUser');
+      if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+        startSession(currentUser);
+      }
+    });
+   
+    // Función para manejar el login
+    async function handleLogin() {
+      const identificacion = document.getElementById('loginIdentificacion').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+     
+      if (!identificacion || !password) {
+        alert('Por favor complete todos los campos');
+        return;
+      }
+     
+      try {
+        // Buscar usuario en Supabase
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?identificacion=eq.${identificacion}`, {
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          }
+        });
+       
+        if (!response.ok) {
+          throw new Error('Error al buscar usuario');
+        }
+       
+        const users = await response.json();
+       
+        if (!users || users.length === 0) {
+          alert('Usuario no encontrado');
+          return;
+        }
+       
+        const user = users[0];
+       
+        // Verificar contraseña encriptada
+        const passwordIsValid = bcrypt.compareSync(password, user.clave_encriptada);
+       
+        if (!passwordIsValid) {
+          alert('Contraseña incorrecta');
+          return;
+        }
+       
+        // Iniciar sesión
+        currentUser = {
+          identificacion: user.identificacion,
+          nombre: user.nombre_usuario,
+          email: user.email,
+          tipoUsuario: user.usuario_superadministrador ? 'superadmin' :
+                      user.usuario_administrador ? 'admin' : 'normal'
+        };
+       
+        // Guardar en localStorage
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+       
+        startSession(currentUser);
+       
+      } catch (error) {
+        console.error('Error en login:', error);
+        alert('Error al iniciar sesión: ' + error.message);
+      }
+    }
+   
+    // Función para iniciar sesión
+    function startSession(user) {
+      loginArea.style.display = 'none';
+      contentArea.style.display = 'block';
+      loggedInUserSpan.textContent = `${user.nombre} (${user.tipoUsuario})`;
+    }
+   
+    // Función para cerrar sesión
+    function handleLogout() {
+      currentUser = null;
+      localStorage.removeItem('currentUser');
+      loginArea.style.display = 'block';
+      contentArea.style.display = 'none';
+      document.getElementById('loginIdentificacion').value = '';
+      document.getElementById('loginPassword').value = '';
+    }
+   
+    // Función para cargar datos de usuarios
+    async function loadUserData() {
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/usuarios?select=*`, {
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          }
+        });
+       
+        if (!response.ok) {
+          throw new Error('Error al obtener usuarios');
+        }
+       
+        const users = await response.json();
+        const tableBody = document.querySelector('#userTable tbody');
+        tableBody.innerHTML = '';
+       
+        users.forEach(user => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${user.identificacion}</td>
+            <td>${user.nombre_usuario}</td>
+            <td>${user.email}</td>
+            <td>${new Date(user.fecha_registro).toLocaleString()}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+       
+      } catch (error) {
+        console.error('Error al cargar usuarios:', error);
+        alert('Error al cargar usuarios: ' + error.message);
+      }
+    }
+  </script>
 </body>
 </html>
